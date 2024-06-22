@@ -1,3 +1,7 @@
+Loom Explainer Video: 
+
+https://www.loom.com/share/0873b1e26e68418699535222d159bcb4?sid=790c96e6-c837-4366-a296-eafc1b1dafd1
+
 Directory structure
 ===================
 backend: Contains Python FastAPI backend code
