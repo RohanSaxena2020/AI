@@ -40,7 +40,31 @@ async def handle_request(request: Request):
         return intent_handler_dict[intent](parameters, session_id)
     return JSONResponse(content={"message": "Intent not recognized."})
 
-def track_order(parameters: dict):
+
+def add_to_order(parameters: dict, session_id: str):
+    food_items = parameters["food-item"]
+    quantities = parameters["number"]
+
+    if len(food_items) != len(quantities):
+        fulfillment_text = "Sorry I didn't understand. Can you please specify food items and quantities clearly?"
+    else:
+        new_food_dict = dict(zip(food_items, quantities))
+
+        if session_id in inprogress_orders:
+            current_food_dict = inprogress_orders[session_id]
+            current_food_dict.update(new_food_dict)
+            inprogress_orders[session_id] = current_food_dict
+        else:
+            inprogress_orders[session_id] = new_food_dict
+
+        order_str = generic_helper.get_str_from_food_dict(inprogress_orders[session_id])
+        fulfillment_text = f"So far you have: {order_str}. Do you need anything else?"
+
+    return JSONResponse(content={
+        "fulfillmentText": fulfillment_text
+    })
+
+def track_order(parameters: dict, session_id: str):
     order_id = int(parameters['order-id'])
     order_status = db_helper.get_order_status(order_id)
     if order_status:
@@ -88,30 +112,6 @@ def complete_order(parameters: dict, session_id: str):
                            f"Your order total is {order_total} which you can pay at the time of delivery!"
 
         del inprogress_orders[session_id]
-
-    return JSONResponse(content={
-        "fulfillmentText": fulfillment_text
-    })
-
-
-def add_to_order(parameters: dict, session_id: str):
-    food_items = parameters["food-item"]
-    quantities = parameters["number"]
-
-    if len(food_items) != len(quantities):
-        fulfillment_text = "Sorry I didn't understand. Can you please specify food items and quantities clearly?"
-    else:
-        new_food_dict = dict(zip(food_items, quantities))
-
-        if session_id in inprogress_orders:
-            current_food_dict = inprogress_orders[session_id]
-            current_food_dict.update(new_food_dict)
-            inprogress_orders[session_id] = current_food_dict
-        else:
-            inprogress_orders[session_id] = new_food_dict
-
-        order_str = generic_helper.get_str_from_food_dict(inprogress_orders[session_id])
-        fulfillment_text = f"So far you have: {order_str}. Do you need anything else?"
 
     return JSONResponse(content={
         "fulfillmentText": fulfillment_text
