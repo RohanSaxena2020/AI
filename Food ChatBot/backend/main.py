@@ -16,30 +16,29 @@ async def root():
 
 @app.post("/")
 async def handle_request(request: Request):
-    # Retrieve the JSON data from the request
     payload = await request.json()
-
-    # Extract the necessary information from the payload
-    # based on the structure of the WebhookRequest from Dialogflow
     intent = payload['queryResult']['intent']['displayName']
     parameters = payload['queryResult']['parameters']
     output_contexts = payload['queryResult']['outputContexts']
+    session_id = generic_helper.extract_session_id(output_contexts[0]["name"])
 
-    if intent == "track.order - context: ongoing-tracking":
-        response = track_order(parameters)
-        return response
-    # session_id = generic_helper.extract_session_id(output_contexts[0]["name"])
+    if intent == "new.order":
+        if session_id in inprogress_orders:
+            del inprogress_orders[session_id]
+        inprogress_orders[session_id] = {}
+        return JSONResponse(content={"message": "New order started. Previous order cleared."})
+    
+    # Handle other intents
+    intent_handler_dict = {
+        'order.add - context: ongoing-order': add_to_order,
+        'order.remove - context: ongoing-order': remove_from_order,
+        'order.complete - context: ongoing-order': complete_order,
+        'track.order - context: ongoing-tracking': track_order
+    }
 
-    # intent_handler_dict = {
-    #     'order.add - context: ongoing-order': add_to_order,
-    #     'order.remove - context: ongoing-order': remove_from_order,
-    #     'order.complete - context: ongoing-order': complete_order,
-    #     'track.order - context: ongoing-order': track_order
-    # }
-
-    # return intent_handler_dict[intent](parameters, session_id)
-
-    #, session_id: str) -> add this to track_order
+    if intent in intent_handler_dict:
+        return intent_handler_dict[intent](parameters, session_id)
+    return JSONResponse(content={"message": "Intent not recognized."})
 
 def track_order(parameters: dict):
     order_id = int(parameters['order-id'])
