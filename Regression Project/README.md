@@ -1,28 +1,10 @@
-{
- "cells": [
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "<h1 style='color:purple' align='center'>Data Science Regression Project: Predicting Golfer's Scoring Average</h1>"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "### This model is designed to predict a golfer's scoring average based on 4 inputs"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "<h3 style='color:purple' align='left'>Background Part 1</h3>\n",
-    "\n",
-    "The PGA tour (which is the highest level of professional golf similar to the NFL or MLB) has an 8 month season. \n",
-    "\n",
-    "Throughout the 8 month season, players work to accumulate Fedex Cup points by winning or finishing well at different tournaments. \n",
+<h1 style='color:purple' align='center'>Data Science Regression Project: Predicting Golfer's Scoring Average</h1>"
+
+<p> This model is designed to predict a golfer's scoring average based on 4 inputs <p> 
+ 
+ <h3 style='color:purple' align='left'>Background Part 1</h3>
+
+<p> The PGA tour (which is the highest level of professional golf similar to the NFL or MLB) has an 8 month season. \n Throughout the 8 month season, players work to accumulate Fedex Cup points by winning or finishing well at different tournaments. \n",
     "\n",
     "The season ends with a final tournament, called the Tour Championship. \n",
     "\n",
