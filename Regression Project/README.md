@@ -4,7 +4,9 @@
  
  <h3 style='color:purple' align='left'>Background Part 1</h3>
 
-<p> The PGA tour (which is the highest level of professional golf similar to the NFL or MLB) has an 8 month season. \n Throughout the 8 month season, players work to accumulate Fedex Cup points by winning or finishing well at different tournaments. \n",
+<p> The PGA tour (which is the highest level of professional golf similar to the NFL or MLB) has an 8 month season.
+ 
+ Throughout the 8 month season, players work to accumulate Fedex Cup points by winning or finishing well at different tournaments. \n",
     "\n",
     "The season ends with a final tournament, called the Tour Championship. \n",
     "\n",
